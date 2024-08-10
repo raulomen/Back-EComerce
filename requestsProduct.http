@@ -1,0 +1,31 @@
+###
+POST http://localhost:3000/api/product HTTP/1.1
+Content-Type: application/json
+Content-Length: 1
+
+{
+    "name": "phone",
+    "value": "500"
+}
+
+
+###
+GET http://localhost:3000/api/product HTTP/1.1
+
+
+###
+GET http://localhost:3000/api/product/66b162b0b975ad53ee7da0b9 HTTP/1.1
+
+###
+PUT http://localhost:3000/api/product/66b164e31aa1191a55bbfee5 HTTP/1.1
+Content-Type: application/json
+Content-Length: 1
+
+{
+    "name": "mouse",
+    "value": "20"
+}
+
+###
+DELETE http://localhost:3000/api/product/66b18033c79edf48ca6f3bfb HTTP/1.1
+

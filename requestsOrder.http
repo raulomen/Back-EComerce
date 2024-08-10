@@ -1,0 +1,35 @@
+###
+POST http://localhost:3000/api/order HTTP/1.1
+Content-Type: application/json
+Content-Length: 1
+
+{
+    "name": "tablet",
+    "value": "200",
+    "amount": "4",
+    "total":"800"
+}
+
+
+###
+GET http://localhost:3000/api/order HTTP/1.1
+
+
+###
+GET http://localhost:3000/api/order/66b1773a15bfc5e8c922e606 HTTP/1.1
+
+###
+PUT http://localhost:3000/api/order/66b1777e15bfc5e8c922e60d HTTP/1.1
+Content-Type: application/json
+Content-Length: 1
+
+{
+    "name": "mouse",
+    "value": "20",
+    "amount": "2",
+    "total": "40"
+}
+
+###
+DELETE http://localhost:3000/api/order/66b1777e15bfc5e8c922e60d HTTP/1.1
+
