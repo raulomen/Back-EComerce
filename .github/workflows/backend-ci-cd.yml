@@ -1,0 +1,70 @@
+name: Backend CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+  bump_version:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Bump version
+        run: |
+          npm version patch -m "Bump version to %s"
+          git push origin main --tags
+
+  generate_changelog:
+    runs-on: ubuntu-latest
+    needs: bump_version
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Generate changelog
+        run: |
+          npm install -g conventional-changelog-cli
+          npx conventional-changelog -p angular -i CHANGELOG.md -s
+
+      - name: Commit changelog
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add CHANGELOG.md
+          git commit -m "chore(release): update changelog [skip ci]"
+          git push origin main
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: generate_changelog
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Simulate deployment
+        run: echo "Deploying backend version $(node -p "require('./package.json').version") to production"
